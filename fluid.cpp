@@ -1,8 +1,7 @@
 #include "Headers.h"
 #include "Fixed.cpp"
-
+#include "FastFixed.cpp"
 using namespace std;
-
 
 // char field[N][M + 1] = {
 //     "#####",
@@ -20,6 +19,7 @@ using namespace std;
 //     "#   #",
 //     "#####",
 // };
+constexpr size_t N = 36, M = 84;
 
 char field[N][M + 1] = {
     "####################################################################################",
@@ -61,17 +61,17 @@ char field[N][M + 1] = {
 };
 
 
-Fixed<1, 2> rho[256];
+Fixed<32, 16> rho[256];
 
-Fixed<1, 2> p[N][M]{}, old_p[N][M];
+Fixed<32, 16> p[N][M]{}, old_p[N][M];
 
 struct VectorField {
-    array<Fixed<1, 2>, deltas.size()> v[N][M];
-    Fixed<1, 2> &add(int x, int y, int dx, int dy, Fixed<1, 2> dv) {
+    array<Fixed<32, 16>, deltas.size()> v[N][M];
+    Fixed<32, 16> &add(int x, int y, int dx, int dy, Fixed<32, 16> dv) {
         return get(x, y, dx, dy) += dv;
     }
 
-    Fixed<1, 2> &get(int x, int y, int dx, int dy) {
+    Fixed<32, 16> &get(int x, int y, int dx, int dy) {
         size_t i = ranges::find(deltas, pair(dx, dy)) - deltas.begin();
         assert(i < deltas.size());
         return v[x][y][i];
@@ -85,9 +85,9 @@ int UT = 0;
 
 mt19937 rnd(1337);
 
-tuple<Fixed<1, 2>, bool, pair<int, int>> propagate_flow(int x, int y, Fixed<1, 2> lim) {
+tuple<Fixed<32, 16>, bool, pair<int, int>> propagate_flow(int x, int y, Fixed<32, 16> lim) {
     last_use[x][y] = UT - 1;
-    Fixed<1, 2> ret = 0;
+    Fixed<32, 16> ret = 0;
     for (auto [dx, dy] : deltas) {
         int nx = x + dx, ny = y + dy;
         if (field[nx][ny] != '#' && last_use[nx][ny] < UT) {
@@ -118,8 +118,8 @@ tuple<Fixed<1, 2>, bool, pair<int, int>> propagate_flow(int x, int y, Fixed<1, 2
     return {ret, 0, {0, 0}};
 }
 
-Fixed<1, 2> random01() {
-    return Fixed<1, 2>::from_raw((rnd() & ((1 << 16) - 1)));
+Fixed<32, 16> random01() {
+    return Fixed<32, 16>::from_raw((rnd() & ((1 << 16) - 1)));
 }
 
 void propagate_stop(int x, int y, bool force = false) {
@@ -146,8 +146,8 @@ void propagate_stop(int x, int y, bool force = false) {
     }
 }
 
-Fixed<1, 2> move_prob(int x, int y) {
-    Fixed<1, 2> sum = 0;
+Fixed<32, 16> move_prob(int x, int y) {
+    Fixed<32, 16> sum = 0;
     for (size_t i = 0; i < deltas.size(); ++i) {
         auto [dx, dy] = deltas[i];
         int nx = x + dx, ny = y + dy;
@@ -165,8 +165,8 @@ Fixed<1, 2> move_prob(int x, int y) {
 
 struct ParticleParams {
     char type;
-    Fixed<1, 2> cur_p;
-    array<Fixed<1, 2>, deltas.size()> v;
+    Fixed<32, 16> cur_p;
+    array<Fixed<32, 16>, deltas.size()> v;
 
     void swap_with(int x, int y) {
         swap(field[x][y], type);
@@ -180,8 +180,8 @@ bool propagate_move(int x, int y, bool is_first) {
     bool ret = false;
     int nx = -1, ny = -1;
     do {
-        std::array<Fixed<1, 2>, deltas.size()> tres;
-        Fixed<1, 2> sum = 0;
+        std::array<Fixed<32, 16>, deltas.size()> tres;
+        Fixed<32, 16> sum = 0;
         for (size_t i = 0; i < deltas.size(); ++i) {
             auto [dx, dy] = deltas[i];
             int nx = x + dx, ny = y + dy;
@@ -236,8 +236,7 @@ int dirs[N][M]{};
 int main() {
     rho[' '] = 0.01;
     rho['.'] = 1000;
-    Fixed<1, 2> g = 0.1;
-
+    Fixed<32, 16> g = 0.1;
     for (size_t x = 0; x < N; ++x) {
         for (size_t y = 0; y < M; ++y) {
             if (field[x][y] == '#')
@@ -250,7 +249,7 @@ int main() {
 
     for (size_t i = 0; i < T; ++i) {
         
-        Fixed<1, 2> total_delta_p = 0;
+        Fixed<32, 16> total_delta_p = 0;
         // Apply external forces
         for (size_t x = 0; x < N; ++x) {
             for (size_t y = 0; y < M; ++y) {

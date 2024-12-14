@@ -4,7 +4,6 @@
 using namespace std;
 
 
-constexpr size_t N = 36, M = 84;
 // constexpr size_t N = 14, M = 5;
 constexpr size_t T = 1'000'000;
 constexpr std::array<pair<int, int>, 4> deltas{{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}};
@@ -88,7 +87,9 @@ ostream &operator<<(ostream &out, Fixed<N, M> x) {
     return out << x.v / (double) (1 << 16);
 }
 
-
+template <int N, int M>
 static constexpr Fixed<N, M> inf = Fixed<N, M>::from_raw(std::numeric_limits<int32_t>::max());
+
+template <int N, int M>
 static constexpr Fixed<N, M> eps = Fixed<N, M>::from_raw(deltas.size());
 
