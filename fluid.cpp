@@ -236,7 +236,7 @@ int dirs[N][M]{};
 int main() {
     rho[' '] = 0.01;
     rho['.'] = 1000;
-    Fixed<32, 16> g = 0.1;
+    Fixed<32, 16> g = 1.1;
     for (size_t x = 0; x < N; ++x) {
         for (size_t y = 0; y < M; ++y) {
             if (field[x][y] == '#')
