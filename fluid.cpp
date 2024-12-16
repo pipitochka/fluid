@@ -33,7 +33,7 @@ constexpr size_t T = 1'000'000;
 
 
 
-Data<36, 84> tmp;
+Data<36, 84, Fixed, Fixed, Fixed> tmp;
 
 
 
@@ -46,7 +46,7 @@ Data<36, 84> tmp;
 
 
 
-int dirs[N][M]{};
+
 
 int main() {
     tmp.rho[' '] = 0.01;
@@ -58,7 +58,7 @@ int main() {
             if (tmp.field[x][y] == '#')
                 continue;
             for (auto [dx, dy] : deltas) {
-                dirs[x][y] += (tmp.field[x + dx][y + dy] != '#');
+                tmp.dirs[x][y] += (tmp.field[x + dx][y + dy] != '#');
             }
         }
     }
@@ -95,8 +95,8 @@ int main() {
                         force -= contr * tmp.rho[(int) tmp.field[nx][ny]];
                         contr = 0;
                         tmp.velocity.add(x, y, dx, dy, force / tmp.rho[(int) tmp.field[x][y]]);
-                        tmp.p[x][y] -= force / dirs[x][y];
-                        total_delta_p -= force / dirs[x][y];
+                        tmp.p[x][y] -= force / tmp.dirs[x][y];
+                        total_delta_p -= force / tmp.dirs[x][y];
                     }
                 }
             }
@@ -135,11 +135,11 @@ int main() {
                         if (tmp.field[x][y] == '.')
                             force *= 0.8;
                         if (tmp.field[x + dx][y + dy] == '#') {
-                            tmp.p[x][y] += force / dirs[x][y];
-                            total_delta_p += force / dirs[x][y];
+                            tmp.p[x][y] += force / tmp.dirs[x][y];
+                            total_delta_p += force / tmp.dirs[x][y];
                         } else {
-                            tmp.p[x + dx][y + dy] += force / dirs[x + dx][y + dy];
-                            total_delta_p += force / dirs[x + dx][y + dy];
+                            tmp.p[x + dx][y + dy] += force / tmp.dirs[x + dx][y + dy];
+                            total_delta_p += force / tmp.dirs[x + dx][y + dy];
                         }
                     }
                 }

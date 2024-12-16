@@ -9,7 +9,7 @@ struct ParticleParams {
     array<Fixed, deltas.size()> v;
 };
 
-template<int N, int M>
+template<int N, int M, typename T1, typename T2, typename T3>
 class Data {
     public:
     char field[N][M + 1] = {
@@ -52,13 +52,15 @@ class Data {
 };
     int last_use[N][M]{};
     int UT = 0;
-    VectorField<36, 84, Fixed> velocity{}, velocity_flow{};
-    Fixed rho[256];
-    Fixed p[N][M]{}, old_p[N][M];
+    VectorField<N, M, T2> velocity{};
+    VectorField<N, M, T3> velocity_flow{};
+    T1 rho[256];
+    T1 p[N][M]{}, old_p[N][M];
+    int dirs[N][M]{};
 
-    tuple<Fixed, bool, pair<int, int>> propagate_flow(int x, int y, Fixed lim) {
+    tuple<T1, bool, pair<int, int>> propagate_flow(int x, int y, T1 lim) {
         last_use[x][y] = UT - 1;
-        Fixed ret = 0;
+        T1 ret = 0;
         for (auto [dx, dy] : deltas) {
             int nx = x + dx, ny = y + dy;
             if (field[nx][ny] != '#' && last_use[nx][ny] < UT) {
