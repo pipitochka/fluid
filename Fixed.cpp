@@ -1,95 +1,82 @@
-#include "Headers.h"
-#include "Fixed.h"
-
+//
+// Created by Артем Акулов on 16.12.2024.
+//
 using namespace std;
 
+class Fixed {
+public:
+    constexpr Fixed(int v): v(v << 16) {}
+    constexpr Fixed(float f): v(f * (1 << 16)) {}
+    constexpr Fixed(double f): v(f * (1 << 16)) {}
+    constexpr Fixed(): v(0) {}
 
-// constexpr size_t N = 14, M = 5;
-constexpr size_t T = 1'000'000;
+    static constexpr Fixed from_raw(int32_t x) {
+        Fixed ret;
+        ret.v = x;
+        return ret;
+    }
+
+    int32_t v;
+
+    std::strong_ordering operator<=>(const Fixed&) const = default;
+    bool operator==(const Fixed&) const = default;
+};
+
 constexpr std::array<pair<int, int>, 4> deltas{{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}};
 
-template <int N, int M>
-Fixed<N, M> operator+(Fixed<N, M> a, Fixed<N, M> b) {
-    return Fixed<N, M>::from_raw(a.v + b.v);
+static constexpr Fixed inf = Fixed::from_raw(std::numeric_limits<int32_t>::max());
+static constexpr Fixed eps = Fixed::from_raw(deltas.size());
+
+Fixed operator+(Fixed a, Fixed b) {
+    return Fixed::from_raw(a.v + b.v);
 }
 
-template <int N, int M>
-Fixed<N, M> operator-(Fixed<N, M> a, Fixed<N, M> b) {
-    return Fixed<N, M>::from_raw(a.v - b.v);
+Fixed operator-(Fixed a, Fixed b) {
+    return Fixed::from_raw(a.v - b.v);
 }
 
-template <int N, int M>
-Fixed<N, M> operator*(Fixed<N, M> a, Fixed<N, M> b) {
-    return Fixed<N, M>::from_raw(((int64_t) a.v * b.v) >> 16);
+Fixed operator*(Fixed a, Fixed b) {
+    return Fixed::from_raw(((int64_t) a.v * b.v) >> 16);
 }
 
-template <int N, int M, class T>
-Fixed<N, M> operator*(Fixed<N, M> a, T b) {
-    return Fixed<N, M>::from_raw(((int64_t) a.v * Fixed<N, M>(b).v) >> 16);
+Fixed operator/(Fixed a, Fixed b) {
+    return Fixed::from_raw(((int64_t) a.v << 16) / b.v);
 }
 
-template <int N, int M>
-Fixed<N, M> operator/(Fixed<N, M> a, Fixed<N, M> b) {
-    return Fixed<N, M>::from_raw(((int64_t) a.v << 16) / b.v);
-}
-
-template <int N, int M, class T>
-Fixed<N, M> operator/(Fixed<N, M> a, T b) {
-    return Fixed<N, M>::from_raw(((int64_t) a.v << 16) / Fixed<N, M>(b).v);
-}
-
-template <int N, int M>
-Fixed<N, M> &operator+=(Fixed<N, M> &a, Fixed<N, M> b) {
+Fixed &operator+=(Fixed &a, Fixed b) {
     return a = a + b;
 }
 
-template <int N, int M>
-Fixed<N, M> &operator-=(Fixed<N, M> &a, Fixed<N, M> b) {
+Fixed &operator-=(Fixed &a, Fixed b) {
     return a = a - b;
 }
 
-template <int N, int M>
-Fixed<N, M> &operator*=(Fixed<N, M> &a, Fixed<N, M> b) {
+Fixed &operator*=(Fixed &a, Fixed b) {
     return a = a * b;
 }
 
-template <int N, int M, typename T>
-Fixed<N, M> &operator*=(Fixed<N, M> &a, T b) {
-    return a = a * b;
-}
-
-template <int N, int M>
-Fixed<N, M> &operator/=(Fixed<N, M> &a, Fixed<N, M> b) {
+Fixed &operator/=(Fixed &a, Fixed b) {
     return a = a / b;
 }
 
-template <int N, int M, typename T>
-Fixed<N, M> &operator/=(Fixed<N, M> &a, T b) {
-    return a = a / b;
+Fixed operator-(Fixed x) {
+    return Fixed::from_raw(-x.v);
 }
 
-
-template <int N, int M>
-Fixed<N, M> operator-(Fixed<N, M> x) {
-    return Fixed<N, M>::from_raw(-x.v);
-}
-
-template <int N, int M>
-Fixed<N, M> abs(Fixed<N, M> x) {
+Fixed abs(Fixed x) {
     if (x.v < 0) {
         x.v = -x.v;
     }
     return x;
 }
 
-template <int N, int M>
-ostream &operator<<(ostream &out, Fixed<N, M> x) {
+ostream &operator<<(ostream &out, Fixed x) {
     return out << x.v / (double) (1 << 16);
 }
 
-template <int N, int M>
-static constexpr Fixed<N, M> inf = Fixed<N, M>::from_raw(std::numeric_limits<int32_t>::max());
 
-template <int N, int M>
-static constexpr Fixed<N, M> eps = Fixed<N, M>::from_raw(deltas.size());
+mt19937 rnd(1337);
 
+Fixed random01() {
+    return Fixed::from_raw((rnd() & ((1 << 16) - 1)));
+}
