@@ -3,10 +3,6 @@
 
 
 
-using namespace std;
-constexpr size_t N = 36, M = 84;
-// constexpr size_t N = 14, M = 5;
-constexpr size_t T = 1'000'000;
 
 // char field[N][M + 1] = {
 //     "#####",
@@ -25,33 +21,22 @@ constexpr size_t T = 1'000'000;
 //     "#####",
 // };
 
+constexpr size_t N = 36, M = 84;
+// constexpr size_t N = 14, M = 5;
 
 
+//template<int N, int M, typename T1, typename T2, typename T3>
+//int fluid() {
+    //Data<N, M, T1, T2, T3> tmp;
 
+int main(){
+    Data<N, M, double, float, double> tmp;
 
+    constexpr size_t T = 1'000'000;
+    using namespace std;
 
-
-
-
-Data<36, 84, Fixed, Fixed, Fixed> tmp;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-int main() {
     tmp.rho[' '] = 0.01;
     tmp.rho['.'] = 1000;
-    Fixed g = 0.1;
 
     for (size_t x = 0; x < N; ++x) {
         for (size_t y = 0; y < M; ++y) {
@@ -65,14 +50,14 @@ int main() {
 
     for (size_t i = 0; i < T; ++i) {
         
-        Fixed total_delta_p = 0;
+        Fixed<64, 32> total_delta_p = 0;
         // Apply external forces
         for (size_t x = 0; x < N; ++x) {
             for (size_t y = 0; y < M; ++y) {
                 if (tmp.field[x][y] == '#')
                     continue;
                 if (tmp.field[x + 1][y] != '#')
-                    tmp.velocity.add(x, y, 1, 0, g);
+                    tmp.velocity.add(x, y, 1, 0, tmp.g);
             }
         }
 
@@ -151,7 +136,7 @@ int main() {
         for (size_t x = 0; x < N; ++x) {
             for (size_t y = 0; y < M; ++y) {
                 if (tmp.field[x][y] != '#' && tmp.last_use[x][y] != tmp.UT) {
-                    if (random01() < tmp.move_prob(x, y)) {
+                    if (random01(tmp.p[0][0]) < tmp.move_prob(x, y)) {
                         prop = true;
                         tmp.propagate_move(x, y, true);
                     } else {

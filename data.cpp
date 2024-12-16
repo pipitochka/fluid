@@ -3,10 +3,11 @@
 //
 #include "VectorField.cpp"
 
+template<typename T, typename T1>
 struct ParticleParams {
     char type;
-    Fixed cur_p;
-    array<Fixed, deltas.size()> v;
+    T cur_p;
+    array<T1, deltas.size()> v;
 };
 
 template<int N, int M, typename T1, typename T2, typename T3>
@@ -57,6 +58,7 @@ class Data {
     T1 rho[256];
     T1 p[N][M]{}, old_p[N][M];
     int dirs[N][M]{};
+    T1 g = 0.1;
 
     tuple<T1, bool, pair<int, int>> propagate_flow(int x, int y, T1 lim) {
         last_use[x][y] = UT - 1;
@@ -115,8 +117,8 @@ class Data {
         }
     }
 
-    Fixed move_prob(int x, int y) {
-        Fixed sum = 0;
+    T1 move_prob(int x, int y) {
+        T1 sum = 0;
         for (size_t i = 0; i < deltas.size(); ++i) {
             auto [dx, dy] = deltas[i];
             int nx = x + dx, ny = y + dy;
@@ -132,7 +134,7 @@ class Data {
         return sum;
     }
 
-    void swap_with(int x, int y, ParticleParams& params) {
+    void swap_with(int x, int y, ParticleParams<T1, T2>& params) {
         swap(field[x][y], params.type);
         swap(p[x][y], params.cur_p);
         swap(velocity.v[x][y], params.v);
@@ -143,8 +145,8 @@ class Data {
         bool ret = false;
         int nx = -1, ny = -1;
         do {
-            std::array<Fixed, deltas.size()> tres;
-            Fixed sum = 0;
+            std::array<T1, deltas.size()> tres;
+            T1 sum = 0;
             for (size_t i = 0; i < deltas.size(); ++i) {
                 auto [dx, dy] = deltas[i];
                 int nx = x + dx, ny = y + dy;
@@ -165,7 +167,7 @@ class Data {
                 break;
             }
 
-            Fixed p = random01() * sum;
+            T1 p = random01(g) * sum;
             size_t d = std::ranges::upper_bound(tres, p) - tres.begin();
 
             auto [dx, dy] = deltas[d];
@@ -185,7 +187,7 @@ class Data {
         }
         if (ret) {
             if (!is_first) {
-                ParticleParams pp{};
+                ParticleParams<T1, T2> pp{};
                 swap_with(x, y, pp);
                 swap_with(nx, ny, pp);
                 swap_with(x, y, pp);
