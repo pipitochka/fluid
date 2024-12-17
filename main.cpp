@@ -1,6 +1,13 @@
-#include "fluid.cpp"
-using namespace std;
+#include <iostream>
+#include <string>
+
+#ifndef TYPES
+#define TYPES "DEFAULT"
+#endif
+
 
 int main() {
-    fluid<36, 84, Fixed<32, 16>, Fixed<32, 16>, Fixed<32, 16>>();
+    std::cout << "Supported TYPES: " << TYPES << std::endl;
+
+    return 0;
 }

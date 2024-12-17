@@ -1188,6 +1188,30 @@
 			],
 			"type" : "STATIC",
 			"value" : "/Users/artemakulov/Study/2 course/1 sem/C++/Fluid"
+		},
+		{
+			"name" : "TYPES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Jopa"
+				}
+			],
+			"type" : "STRING",
+			"value" : ""
+		},
+		{
+			"name" : "types",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "FLOAT,FAST_FIXED(32, 16),FIXED(32, 16),DOUBLE"
+				}
+			],
+			"type" : "STRING",
+			"value" : "="
 		}
 	],
 	"kind" : "cache",

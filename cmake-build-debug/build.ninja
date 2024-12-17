@@ -49,8 +49,9 @@ cmake_ninja_workdir = /Users/artemakulov/Study/2$ course/1$ sem/C++/Fluid/cmake-
 
 build cmake_object_order_depends_target_Fluid2_0: phony || .
 
-build CMakeFiles/Fluid2_0.dir/fluid.cpp.o: CXX_COMPILER__Fluid2_0_unscanned_Debug /Users/artemakulov/Study/2$ course/1$ sem/C++/Fluid/fluid.cpp || cmake_object_order_depends_target_Fluid2_0
-  DEP_FILE = CMakeFiles/Fluid2_0.dir/fluid.cpp.o.d
+build CMakeFiles/Fluid2_0.dir/main.cpp.o: CXX_COMPILER__Fluid2_0_unscanned_Debug /Users/artemakulov/Study/2$ course/1$ sem/C++/Fluid/main.cpp || cmake_object_order_depends_target_Fluid2_0
+  DEFINES = -DTYPES="\"FLOAT,FAST_FIXED(32,16),FIXED,DOUBLE\""
+  DEP_FILE = CMakeFiles/Fluid2_0.dir/main.cpp.o.d
   FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/Fluid2_0.dir
   OBJECT_FILE_DIR = CMakeFiles/Fluid2_0.dir
@@ -63,7 +64,7 @@ build CMakeFiles/Fluid2_0.dir/fluid.cpp.o: CXX_COMPILER__Fluid2_0_unscanned_Debu
 #############################################
 # Link the executable Fluid2_0
 
-build Fluid2_0: CXX_EXECUTABLE_LINKER__Fluid2_0_Debug CMakeFiles/Fluid2_0.dir/fluid.cpp.o
+build Fluid2_0: CXX_EXECUTABLE_LINKER__Fluid2_0_Debug CMakeFiles/Fluid2_0.dir/main.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk
   OBJECT_DIR = CMakeFiles/Fluid2_0.dir
   POST_BUILD = :

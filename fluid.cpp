@@ -25,12 +25,12 @@ constexpr size_t N = 36, M = 84;
 // constexpr size_t N = 14, M = 5;
 
 
-//template<int N, int M, typename T1, typename T2, typename T3>
-//int fluid() {
-    //Data<N, M, T1, T2, T3> tmp;
+template<int N, int M, typename T1, typename T2, typename T3>
+int fluid() {
+    Data<N, M, T1, T2, T3> tmp;
 
-int main(){
-    Data<N, M, float, float, Fixed<32, 16>> tmp;
+// void fluid(){
+//     Data<N, M, float, float, Fixed<32, 16>> tmp;
 
     constexpr size_t T = 1'000'000;
     using namespace std;

@@ -231,6 +231,12 @@ Fluid_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Fluid_SOURCE_DIR:STATIC=/Users/artemakulov/Study/2 course/1 sem/C++/Fluid
 
+//Jopa
+TYPES:STRING=
+
+//FLOAT,FAST_FIXED(32, 16),FIXED(32, 16),DOUBLE
+types:STRING==
+
 
 ########################
 # INTERNAL cache entries

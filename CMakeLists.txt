@@ -3,5 +3,10 @@ project(Fluid2_0)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Fluid2_0
-        fluid.cpp)
+set(types "\"FLOAT,FAST_FIXED(32,16),FIXED,DOUBLE\"")
+
+add_compile_definitions(
+        -DTYPES=${types}
+)
+
+add_executable(Fluid2_0 main.cpp)

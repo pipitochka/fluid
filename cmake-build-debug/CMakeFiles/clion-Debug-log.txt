@@ -1,4 +1,18 @@
 /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -G Ninja -S "/Users/artemakulov/Study/2 course/1 sem/C++/Fluid" -B "/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug"
+CMake Warning (dev) at CMakeLists.txt:7:
+  Syntax Warning in cmake code at column 15
+
+  Argument not separated from preceding token by whitespace.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
 -- Configuring done (0.0s)
+WARNING: Function-style preprocessor definitions may not be passed on the compiler command line because many compilers do not support it.
+CMake is dropping a preprocessor definition: "FLOAT,FAST_FIXED(13,7),FIXED(32,5),DOUBLE"
+Consider defining the macro in a (configured) header file.
+
 -- Generating done (0.0s)
+WARNING: Function-style preprocessor definitions may not be passed on the compiler command line because many compilers do not support it.
+CMake is dropping a preprocessor definition: "FLOAT,FAST_FIXED(13,7),FIXED(32,5),DOUBLE"
+Consider defining the macro in a (configured) header file.
+
 -- Build files have been written to: /Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug
