@@ -30,7 +30,7 @@ constexpr size_t N = 36, M = 84;
     //Data<N, M, T1, T2, T3> tmp;
 
 int main(){
-    Data<N, M, double, float, double> tmp;
+    Data<N, M, float, float, Fixed<32, 16>> tmp;
 
     constexpr size_t T = 1'000'000;
     using namespace std;

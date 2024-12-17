@@ -2,6 +2,8 @@
 // Created by Артем Акулов on 16.12.2024.
 //
 using namespace std;
+#include <type_traits>
+
 
 template<int N, int M>
 class Fixed {
@@ -23,7 +25,7 @@ public:
     }
     template<int N1, int M1>
     constexpr Fixed(const Fixed<N1, M1>& other) {
-        if (M > M1) {
+        if (M1 > M) {
             v = other.v >> (M1 - M);
         } else if (M1 < M) {
             v = other.v << (M - M1);
@@ -33,9 +35,50 @@ public:
     }
     StorageType v;
 
-    std::strong_ordering operator<=>(const Fixed&) const = default;
     bool operator==(const Fixed&) const = default;
+
+    template<int N1, int M1>
+    bool operator==(const Fixed<N1, M1>& qq) const {
+        Fixed<N, M> tmp(qq);
+        return tmp == *this;
+    }
+
+    template<typename T>
+    requires std::is_arithmetic_v<T>
+    bool operator==(const T& qq) const {
+        Fixed<N, M> tmp(qq);
+        return tmp == *this;
+    }
+
+    operator float() const {
+        return static_cast<float>(v << M);
+    }
+
+    operator double() const {
+        return static_cast<double>(v << M);
+    }
+
+
+    std::strong_ordering operator<=>(const Fixed& other) const {
+        return v <=> other.v;
+    };
+
+    template<typename T>
+    requires std::is_arithmetic_v<T>
+    std::strong_ordering operator<=>(const T& other) const {
+        Fixed<N, M> tmp(other);
+        return *this <=> tmp;
+    }
+
+    template<int N1, int M1>
+    std::strong_ordering operator<=>(const Fixed<N1, M1>& other) const {
+        Fixed tmp(other);
+        return *this <=> tmp;
+    }
 };
+
+
+
 
 constexpr std::array<pair<int, int>, 4> deltas{{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}};
 
@@ -44,8 +87,6 @@ static constexpr Fixed<N, M> inf = Fixed<N, M>::from_raw(std::numeric_limits<int
 
 template<int N, int M>
 static constexpr Fixed<N, M> eps = Fixed<N, M>::from_raw(deltas.size());
-
-
 
 template<int N, int M>
 Fixed<N, M> operator+(Fixed<N, M> a, Fixed<N, M> b) {
@@ -143,6 +184,61 @@ Fixed<N, M> abs(Fixed<N, M> x) {
 template<int N, int M>
 ostream &operator<<(ostream &out, Fixed<N, M> x) {
     return out << x.v / (double) (1 << M);
+}
+
+template<typename T1, typename T>
+T1 min(const T1 a, const T& b) {
+    return b > a ? a : T1(b);
+}
+
+
+
+template<typename T, int N, int M>
+requires std::is_arithmetic_v<T>
+T operator+(T a, Fixed<N, M> b) {
+    return a + (T)(b.v << M);
+}
+
+template<typename T, int N, int M>
+requires std::is_arithmetic_v<T>
+T operator-(T a, Fixed<N, M> b) {
+    return a - (T)(b.v << M);
+}
+
+template<typename T, int N, int M>
+requires std::is_arithmetic_v<T>
+T operator*(T a, Fixed<N, M> b) {
+    return a * (T)(b.v << M);
+}
+
+template<typename T, int N, int M>
+requires std::is_arithmetic_v<T>
+T operator/(T a, Fixed<N, M> b) {
+    return a / (T)(b.v << M);
+}
+
+template<int N, int M, typename T>
+requires std::is_arithmetic_v<T>
+T &operator+=(T &a, Fixed<N, M> b) {
+    return a = a + b;
+}
+
+template<int N, int M, typename T>
+requires std::is_arithmetic_v<T>
+T &operator-=(T &a, Fixed<N, M> b) {
+    return a = a - b;
+}
+
+template<int N, int M, typename T>
+requires std::is_arithmetic_v<T>
+T &operator*=(T &a, Fixed<N, M> b) {
+    return a = a * b;
+}
+
+template<int N, int M, typename T>
+requires std::is_arithmetic_v<T>
+T &operator/=(T &a, Fixed<N, M> b) {
+    return a = a / b;
 }
 
 

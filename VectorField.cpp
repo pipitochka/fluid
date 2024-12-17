@@ -7,7 +7,9 @@ template<int N, int M, class T>
 class VectorField {
 public:
     array<T, deltas.size()> v[N][M];
-    T &add(int x, int y, int dx, int dy, T dv) {
+
+    template<typename T1>
+    T &add(int x, int y, int dx, int dy, T1 dv) {
         return get(x, y, dx, dy) += dv;
     }
 
