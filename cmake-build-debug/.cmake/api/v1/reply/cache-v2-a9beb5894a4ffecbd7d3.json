@@ -1118,6 +1118,42 @@
 			"value" : "FALSE"
 		},
 		{
+			"name" : "CompileAndRun_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug"
+		},
+		{
+			"name" : "CompileAndRun_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "ON"
+		},
+		{
+			"name" : "CompileAndRun_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/Users/artemakulov/Study/2 course/1 sem/C++/Fluid"
+		},
+		{
 			"name" : "Fluid2_0_BINARY_DIR",
 			"properties" : 
 			[
@@ -1143,6 +1179,42 @@
 		},
 		{
 			"name" : "Fluid2_0_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/Users/artemakulov/Study/2 course/1 sem/C++/Fluid"
+		},
+		{
+			"name" : "FluidCombinations_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug"
+		},
+		{
+			"name" : "FluidCombinations_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "ON"
+		},
+		{
+			"name" : "FluidCombinations_SOURCE_DIR",
 			"properties" : 
 			[
 				{

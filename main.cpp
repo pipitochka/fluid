@@ -1,13 +1,10 @@
+//
+// Created by Артем Акулов on 20.12.2024.
+//
+#include "generate.h"
+
+#include <stdio.h>
 #include <iostream>
-#include <string>
-
-#ifndef TYPES
-#define TYPES "DEFAULT"
-#endif
-
-
 int main() {
-    std::cout << "Supported TYPES: " << TYPES << std::endl;
-
-    return 0;
+  std::cout << "Hello, World!\n";
 }

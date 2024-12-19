@@ -15,7 +15,8 @@
 					"source" : ".",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -30,7 +31,8 @@
 					"name" : "Fluid2_0",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -39,8 +41,15 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "Fluid2_0::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Fluid2_0-Debug-ef9b05c9708d74b33773.json",
+					"jsonFile" : "target-Fluid2_0-Debug-0c0cd38e4f57eaf44596.json",
 					"name" : "Fluid2_0",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "generator::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-generator-Debug-4320cd156b0e7d9dafdc.json",
+					"name" : "generator",
 					"projectIndex" : 0
 				}
 			]

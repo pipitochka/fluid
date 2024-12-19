@@ -214,6 +214,15 @@ CMAKE_TAPI:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeD
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
+CompileAndRun_BINARY_DIR:STATIC=/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug
+
+//Value Computed by CMake
+CompileAndRun_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+CompileAndRun_SOURCE_DIR:STATIC=/Users/artemakulov/Study/2 course/1 sem/C++/Fluid
+
+//Value Computed by CMake
 Fluid2_0_BINARY_DIR:STATIC=/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug
 
 //Value Computed by CMake
@@ -221,6 +230,15 @@ Fluid2_0_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 Fluid2_0_SOURCE_DIR:STATIC=/Users/artemakulov/Study/2 course/1 sem/C++/Fluid
+
+//Value Computed by CMake
+FluidCombinations_BINARY_DIR:STATIC=/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug
+
+//Value Computed by CMake
+FluidCombinations_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+FluidCombinations_SOURCE_DIR:STATIC=/Users/artemakulov/Study/2 course/1 sem/C++/Fluid
 
 //Value Computed by CMake
 Fluid_BINARY_DIR:STATIC=/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug

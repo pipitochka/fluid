@@ -41,16 +41,48 @@ include CMakeFiles/rules.ninja
 
 cmake_ninja_workdir = /Users/artemakulov/Study/2$ course/1$ sem/C++/Fluid/cmake-build-debug/
 # =============================================================================
+# Object build statements for EXECUTABLE target generator
+
+
+#############################################
+# Order-only phony target for generator
+
+build cmake_object_order_depends_target_generator: phony || .
+
+build CMakeFiles/generator.dir/generator.cpp.o: CXX_COMPILER__generator_unscanned_Debug /Users/artemakulov/Study/2$ course/1$ sem/C++/Fluid/generator.cpp || cmake_object_order_depends_target_generator
+  DEFINES = -DSIZES="\"S(1920,1080),S(10,10),S(42,1337)\"" -DTYPES="\"FLOAT,FIXED(32,5),DOUBLE, FIXED(33, 77)\""
+  DEP_FILE = CMakeFiles/generator.dir/generator.cpp.o.d
+  FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/generator.dir
+  OBJECT_FILE_DIR = CMakeFiles/generator.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target generator
+
+
+#############################################
+# Link the executable generator
+
+build generator: CXX_EXECUTABLE_LINKER__generator_Debug CMakeFiles/generator.dir/generator.cpp.o
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk
+  OBJECT_DIR = CMakeFiles/generator.dir
+  POST_BUILD = cd "/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug" && ./generator
+  PRE_LINK = :
+  TARGET_FILE = generator
+  TARGET_PDB = generator.dbg
+
+# =============================================================================
 # Object build statements for EXECUTABLE target Fluid2_0
 
 
 #############################################
 # Order-only phony target for Fluid2_0
 
-build cmake_object_order_depends_target_Fluid2_0: phony || .
+build cmake_object_order_depends_target_Fluid2_0: phony || generator
 
 build CMakeFiles/Fluid2_0.dir/main.cpp.o: CXX_COMPILER__Fluid2_0_unscanned_Debug /Users/artemakulov/Study/2$ course/1$ sem/C++/Fluid/main.cpp || cmake_object_order_depends_target_Fluid2_0
-  DEFINES = -DTYPES="\"FLOAT,FAST_FIXED(32,16),FIXED,DOUBLE\""
+  DEFINES = -DSIZES="\"S(1920,1080),S(10,10),S(42,1337)\"" -DTYPES="\"FLOAT,FIXED(32,5),DOUBLE, FIXED(33, 77)\""
   DEP_FILE = CMakeFiles/Fluid2_0.dir/main.cpp.o.d
   FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/Fluid2_0.dir
@@ -64,7 +96,7 @@ build CMakeFiles/Fluid2_0.dir/main.cpp.o: CXX_COMPILER__Fluid2_0_unscanned_Debug
 #############################################
 # Link the executable Fluid2_0
 
-build Fluid2_0: CXX_EXECUTABLE_LINKER__Fluid2_0_Debug CMakeFiles/Fluid2_0.dir/main.cpp.o
+build Fluid2_0: CXX_EXECUTABLE_LINKER__Fluid2_0_Debug CMakeFiles/Fluid2_0.dir/main.cpp.o || generator
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk
   OBJECT_DIR = CMakeFiles/Fluid2_0.dir
   POST_BUILD = :
@@ -106,7 +138,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 #############################################
 # Folder: /Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug
 
-build all: phony Fluid2_0
+build all: phony generator Fluid2_0
 
 # =============================================================================
 # Built-in targets
