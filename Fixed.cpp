@@ -7,11 +7,14 @@ using namespace std;
 
 template<int N, int M>
 class Fixed {
-public:
+    static_assert(N == 8 || N == 16 || N == 32 || N == 64 || N == 128);
     using StorageType = typename std::conditional<N == 8, int8_t,
         typename std::conditional<N == 16, uint16_t,
         typename std::conditional<N == 32, uint32_t,
         typename std::conditional<N == 64, uint64_t, void>::type>::type>::type>::type;
+
+public:
+    StorageType v;
 
     constexpr Fixed(int v): v(v << M) {}
     constexpr Fixed(float f): v(f * (1 << M)) {}
@@ -33,7 +36,6 @@ public:
             v = other.v;
         }
     }
-    StorageType v;
 
     bool operator==(const Fixed&) const = default;
 

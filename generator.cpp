@@ -133,12 +133,17 @@ int main() {
     vector<Triplet> triplets = ParseTypes(TYPES);
 
     ofstream out;          // поток для записи
-    out.open("../generate.h");
+    out.open("../generate.cpp");
 
     string s = R"(
-#ifndef GENERATE_H
-#define GENERATE_H
 #include "fluid.cpp"
+#include <vector>
+#include <string>
+using namespace std;
+string s = "";
+
+FluidFactory Generate() {
+    FluidFactory ff = FluidFactory();
 
 )";
     out << s;
@@ -147,9 +152,17 @@ int main() {
 for (int i = 0; i < triplets.size(); i++) {
     for(int j = 0; j < triplets.size(); j++) {
         for(int k = 0; k < triplets.size(); k++) {
-            for (int m = 0; m < 1; m++) {
-                s = "Fluid<";
+            for (int m = 0; m < duplets.size(); m++) {
+                s = "ff.registerType<";
+                s+= to_string(duplets[m].N);
+                s+= ",";
+                s+= to_string(duplets[m].M);
+                s+= ",";
                 ss = "f_";
+                ss+= to_string(duplets[m].N);
+                ss+= "_";
+                ss+= to_string(duplets[m].M);
+                ss+= "_";
                 add(s, ss, triplets[i]);
                 s += ",";
                 ss += "_";
@@ -158,7 +171,7 @@ for (int i = 0; i < triplets.size(); i++) {
                 ss += "_";
                 add(s, ss, triplets[k]);
                 s += ">";
-                s += " " + ss + ";";
+                s += "(\"" + ss + "\")"+ ";";
                 s += "\n";
                 out << s;
                 num++;
@@ -170,7 +183,8 @@ for (int i = 0; i < triplets.size(); i++) {
 
 
     s = R"(
-#endif //GENERATE_H
+return ff;
+}
 )";
     out << s;
     out.close();
