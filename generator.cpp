@@ -131,6 +131,9 @@ void add(string& s, string &ss, Triplet &t) {
 int main() {
     vector<Duplet> duplets = ParseSizes(SIZES);
     vector<Triplet> triplets = ParseTypes(TYPES);
+     if (duplets.size() == 0) {
+         duplets.push_back({36, 84});
+     }
 
     ofstream out;          // поток для записи
     out.open("../generate.cpp");
