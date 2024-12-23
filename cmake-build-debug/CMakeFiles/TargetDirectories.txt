@@ -1,0 +1,4 @@
+/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug/CMakeFiles/generator.dir
+/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug/CMakeFiles/Fluid2_0.dir
+/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug/CMakeFiles/rebuild_cache.dir
