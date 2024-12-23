@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <cstring>
+#include <memory>
+
 
 struct Triplet_int {
     int a, b, c;
@@ -38,6 +40,27 @@ void prepare(Triplet_str& val, string& s) {
     }
 }
 
+string qwe(string& s) {
+    string q;
+    if (s.substr(0, 10) == "FAST_FIXED") {
+        q = "Fixed" + s.substr(10, s.size() - 10) + "_1";
+        return q;
+    }
+    else if (s.substr(0, 5) == "FIXED") {
+        q = "Fixed" + s.substr(5, s.size() - 5) + "_0";
+        return q;
+    }
+    else if (s.substr(0, 6) == "DOUBLE") {
+        q = "double";
+        return q;
+    }
+    else if (s.substr(0, 5) == "FLOAT") {
+        q = "float";
+        return q;
+    }
+    throw std::invalid_argument("Wrong input");
+}
+
 pair<string, string> TakeName(vector<string>& data) {
     Triplet_str triplet;
     for (int i = 0; i < data.size(); ++i) {
@@ -55,6 +78,9 @@ pair<string, string> TakeName(vector<string>& data) {
     if (triplet.c[triplet.c.size() - 1] == ')') {
         triplet.c.resize(triplet.c.size() - 1);
     }
+    triplet.a = qwe(triplet.a);
+    triplet.b = qwe(triplet.b);
+    triplet.c = qwe(triplet.c);
     string s1 = triplet.a + "_" + triplet.b + "_" + triplet.c;
     for (int i = 0; i < s1.size(); ++i) {
         if (s1[i] == '(' || s1[i] == ')' || s1[i] == ',') {
@@ -62,6 +88,7 @@ pair<string, string> TakeName(vector<string>& data) {
         }
     }
     string s2 = triplet.route;
+
     return make_pair(s1, s2);
 }
 

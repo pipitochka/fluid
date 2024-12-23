@@ -2,6 +2,7 @@
 // Created by Артем Акулов on 16.12.2024.
 //
 #include "VectorField.cpp"
+#include "algorithm"
 
 template<typename T, typename T1>
 struct ParticleParams {

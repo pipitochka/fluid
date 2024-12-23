@@ -56,7 +56,7 @@ public:
 
         for (size_t i = 0; i < T; ++i) {
 
-            Fixed<64, 32> total_delta_p = 0;
+            Fixed<64, 32, 1> total_delta_p = 0;
             // Apply external forces
             for (size_t x = 0; x < N; ++x) {
                 for (size_t y = 0; y < M; ++y) {

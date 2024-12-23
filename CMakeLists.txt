@@ -3,7 +3,7 @@ project(Fluid2_0)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(types "FLOAT,FIXED(32,5),DOUBLE, FIXED(32, 16)")
+set(types "FLOAT, FAST_FIXED(31, 10), FIXED(32,16),DOUBLE")
 
 set(sizes "S(36,84)")
 

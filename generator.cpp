@@ -105,14 +105,18 @@ void add(string& s, string &ss, Triplet &t) {
         ss += "float";
     }
     if (t.name == "FAST_FIXED") {
-        s += "FastFixed<";
-        ss += "FastFixed_";
+        s += "Fixed<";
+        ss += "Fixed_";
         s += to_string(t.N);
         ss += to_string(t.N);
         s+= ",";
         ss+= "_";
         s += to_string(t.M);
         ss += to_string(t.M);
+        s+= ",";
+        ss+= "_";
+        s += to_string(1);
+        ss += to_string(1);
         s += ">";
     }
     if (t.name == "FIXED") {
@@ -124,6 +128,10 @@ void add(string& s, string &ss, Triplet &t) {
         ss+= "_";
         s += to_string(t.M);
         ss += to_string(t.M);
+        s+= ",";
+        ss+= "_";
+        s += to_string(0);
+        ss += to_string(0);
         s += ">";
     }
 }

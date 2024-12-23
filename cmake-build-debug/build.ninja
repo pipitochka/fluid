@@ -50,9 +50,9 @@ cmake_ninja_workdir = /Users/artemakulov/Study/2$ course/1$ sem/C++/Fluid/cmake-
 build cmake_object_order_depends_target_generator: phony || .
 
 build CMakeFiles/generator.dir/generator.cpp.o: CXX_COMPILER__generator_unscanned_Debug /Users/artemakulov/Study/2$ course/1$ sem/C++/Fluid/generator.cpp || cmake_object_order_depends_target_generator
-  DEFINES = -DSIZES="\"S(36,84)\"" -DTYPES="\"FLOAT,FIXED(32,5),DOUBLE, FIXED(32, 16)\""
+  DEFINES = -DSIZES="\"S(36,84)\"" -DTYPES="\"FLOAT, FAST_FIXED(31, 10), FIXED(32,16),DOUBLE\""
   DEP_FILE = CMakeFiles/generator.dir/generator.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -fcolor-diagnostics
+  FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/generator.dir
   OBJECT_FILE_DIR = CMakeFiles/generator.dir
 
@@ -65,7 +65,7 @@ build CMakeFiles/generator.dir/generator.cpp.o: CXX_COMPILER__generator_unscanne
 # Link the executable generator
 
 build generator: CXX_EXECUTABLE_LINKER__generator_Debug CMakeFiles/generator.dir/generator.cpp.o
-  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk
   OBJECT_DIR = CMakeFiles/generator.dir
   POST_BUILD = cd "/Users/artemakulov/Study/2 course/1 sem/C++/Fluid/cmake-build-debug" && ./generator
   PRE_LINK = :
@@ -82,9 +82,9 @@ build generator: CXX_EXECUTABLE_LINKER__generator_Debug CMakeFiles/generator.dir
 build cmake_object_order_depends_target_Fluid2_0: phony || generator
 
 build CMakeFiles/Fluid2_0.dir/main.cpp.o: CXX_COMPILER__Fluid2_0_unscanned_Debug /Users/artemakulov/Study/2$ course/1$ sem/C++/Fluid/main.cpp || cmake_object_order_depends_target_Fluid2_0
-  DEFINES = -DSIZES="\"S(36,84)\"" -DTYPES="\"FLOAT,FIXED(32,5),DOUBLE, FIXED(32, 16)\""
+  DEFINES = -DSIZES="\"S(36,84)\"" -DTYPES="\"FLOAT, FAST_FIXED(31, 10), FIXED(32,16),DOUBLE\""
   DEP_FILE = CMakeFiles/Fluid2_0.dir/main.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -fcolor-diagnostics
+  FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk -fcolor-diagnostics
   OBJECT_DIR = CMakeFiles/Fluid2_0.dir
   OBJECT_FILE_DIR = CMakeFiles/Fluid2_0.dir
 
@@ -97,7 +97,7 @@ build CMakeFiles/Fluid2_0.dir/main.cpp.o: CXX_COMPILER__Fluid2_0_unscanned_Debug
 # Link the executable Fluid2_0
 
 build Fluid2_0: CXX_EXECUTABLE_LINKER__Fluid2_0_Debug CMakeFiles/Fluid2_0.dir/main.cpp.o || generator
-  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk
+  FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk
   OBJECT_DIR = CMakeFiles/Fluid2_0.dir
   POST_BUILD = :
   PRE_LINK = :
