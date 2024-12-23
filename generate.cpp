@@ -1,5 +1,6 @@
 
-#include "fluid.cpp"
+#include "fluid_fast.cpp"
+
 #include <vector>
 #include <string>
 using namespace std;

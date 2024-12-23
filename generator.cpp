@@ -6,6 +6,8 @@
 
 using namespace std;
 
+#ifndef FAST
+#endif
 
 #ifndef TYPES
 //#define TYPES "FLOAT,FIXED(32,5),DOUBLE"
@@ -15,13 +17,14 @@ using namespace std;
 //#define SIZES "S(1920,1080),S(10,10),S(42,1337)"
 #endif
 
+
 struct Triplet {
     string name;
     int N;
     int M;
 };
 
- vector<Triplet> ParseTypes(const string &s) {
+vector<Triplet> ParseTypes(const string &s) {
     vector<Triplet> result;
     int i = 0;
     while (i < s.size()) {
@@ -69,7 +72,7 @@ struct Duplet {
     int M;
 };
 
- vector<Duplet> ParseSizes(const string &s) {
+vector<Duplet> ParseSizes(const string &s) {
     vector<Duplet> result;
     int i = 0;
     while (i < s.size()) {
@@ -139,15 +142,24 @@ void add(string& s, string &ss, Triplet &t) {
 int main() {
     vector<Duplet> duplets = ParseSizes(SIZES);
     vector<Triplet> triplets = ParseTypes(TYPES);
-     if (duplets.size() == 0) {
+    if (duplets.size() == 0) {
          duplets.push_back({36, 84});
      }
-
-    ofstream out;          // поток для записи
+    ofstream out;
     out.open("../generate.cpp");
-
-    string s = R"(
+    string s;
+    if (FAST == "1") {
+        s = R"(
+#include "fluid_fast.cpp"
+)";
+    }
+     else {
+         s = R"(
 #include "fluid.cpp"
+)";
+     }
+     out << s;
+     s = R"(
 #include <vector>
 #include <string>
 using namespace std;

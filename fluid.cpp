@@ -3,7 +3,7 @@
 #include <functional>
 #include <unordered_map>
 #include <string>
-
+#include <chrono>
 
 // char field[N][M + 1] = {
 //     "#####",
@@ -34,6 +34,7 @@ class Fluid: public FluidBase {
 public:
     void fluid() override{
         Data<N, M, T1, T2, T3> tmp;
+        auto start = std::chrono::high_resolution_clock::now();
 
         // void fluid(){
         //     Data<N, M, float, float, Fixed<32, 16>> tmp;
@@ -154,6 +155,9 @@ public:
 
             if (prop) {
                 cout << "Tick " << i << ":\n";
+                auto end = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> elapsed = end - start;
+                cout << "Время выполнения: " << elapsed.count() << endl;
                 for (size_t x = 0; x < N; ++x) {
                     cout << tmp.field[x] << "\n";
                 }

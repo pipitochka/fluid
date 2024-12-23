@@ -7,9 +7,12 @@ set(types "FLOAT, FAST_FIXED(31, 10), FIXED(32,16),DOUBLE")
 
 set(sizes "S(36,84)")
 
+set(fast "1")
+
 add_compile_definitions(
         TYPES="${types}"
         SIZES="${sizes}"
+        FAST="${fast}"
 )
 add_executable(generator generator.cpp)
 
