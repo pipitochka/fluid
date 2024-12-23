@@ -4,6 +4,10 @@
 #include <unordered_map>
 #include <string>
 #include <chrono>
+#include <cstdint>
+#include <cstring>
+#include <iostream>
+
 
 // char field[N][M + 1] = {
 //     "#####",
@@ -21,6 +25,8 @@
 //     "#   #",
 //     "#####",
 // };
+
+using namespace std;
 
 constexpr size_t N = 36, M = 84;
 // constexpr size_t N = 14, M = 5;

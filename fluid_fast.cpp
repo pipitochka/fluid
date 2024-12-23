@@ -4,6 +4,10 @@
 #include <unordered_map>
 #include <string>
 #include <chrono>
+#include <cstdint>
+#include <cstring>
+#include <iostream>
+
 
 // char field[N][M + 1] = {
 //     "#####",
