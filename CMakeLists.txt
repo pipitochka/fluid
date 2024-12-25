@@ -7,7 +7,9 @@ set(types "FLOAT, FAST_FIXED(31, 10), FIXED(32,16),DOUBLE")
 
 set(sizes "S(36,84)")
 
-set(fast "1")
+set(fast "0")
+
+set(number 8)
 
 add_compile_definitions(
         TYPES="${types}"

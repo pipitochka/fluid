@@ -7,6 +7,8 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <thread>
+#include <atomic>
 
 
 // char field[N][M + 1] = {
@@ -30,13 +32,13 @@ constexpr size_t N = 36, M = 84;
 // constexpr size_t N = 14, M = 5;
 class FluidBase {
 	public:
-	virtual void fluid() = 0;
+	virtual void fluid(size_t num_threads) = 0;
 };
 
 template<int N, int M, typename T1, typename T2, typename T3>
 class Fluid: public FluidBase {
 public:
-    void fluid() override{
+    void fluid(size_t num_threads) override{
         Data<N, M, T1, T2, T3> tmp;
         auto start = std::chrono::high_resolution_clock::now();
 
@@ -62,85 +64,126 @@ public:
         for (size_t i = 0; i < T; ++i) {
 
             Fixed<64, 32, 1> total_delta_p = 0;
-            // Apply external forces
-            for (size_t x = 0; x < N; ++x) {
-                for (size_t y = 0; y < M; ++y) {
-                    if (tmp.field[x][y] == '#')
-                        continue;
-                    if (tmp.field[x + 1][y] != '#')
-                        tmp.velocity.add(x, y, 1, 0, tmp.g);
-                }
-            }
 
-            // Apply forces from p
-            memcpy(tmp.old_p, tmp.p, sizeof(tmp.p));
-            for (size_t x = 0; x < N; ++x) {
-                for (size_t y = 0; y < M; ++y) {
-                    if (tmp.field[x][y] == '#')
-                        continue;
-                    for (auto [dx, dy] : deltas) {
-                        int nx = x + dx, ny = y + dy;
-                        if (tmp.field[nx][ny] != '#' && tmp.old_p[nx][ny] < tmp.old_p[x][y]) {
-                            auto delta_p = tmp.old_p[x][y] - tmp.old_p[nx][ny];
-                            auto force = delta_p;
-                            auto &contr = tmp.velocity.get(nx, ny, -dx, -dy);
-                            if (contr * tmp.rho[(int) tmp.field[nx][ny]] >= force) {
-                                contr -= force / tmp.rho[(int) tmp.field[nx][ny]];
+            std::vector<std::thread> threads;
+            for (size_t t = 0; t < num_threads; ++t) {
+                threads.emplace_back([&, t](){
+                    for (size_t x = t; x < N; x+=num_threads) {
+                        for (size_t y = t; y < M; y+=num_threads) {
+                            if (tmp.field[x][y] == '#') {
                                 continue;
                             }
-                            force -= contr * tmp.rho[(int) tmp.field[nx][ny]];
-                            contr = 0;
-                            tmp.velocity.add(x, y, dx, dy, force / tmp.rho[(int) tmp.field[x][y]]);
-                            tmp.p[x][y] -= force / tmp.dirs[x][y];
-                            total_delta_p -= force / tmp.dirs[x][y];
+                            else {
+                                tmp.velocity.add(x, y, 1, 0, tmp.g);
+                            }
                         }
                     }
-                }
+                });
             }
+
+            for (auto& t : threads) {
+                t.join();
+            }
+            threads.clear();
+
+            // Apply forces from p
+
+            memcpy(tmp.old_p, tmp.p, sizeof(tmp.p));
+            for (size_t t = 0; t < num_threads; ++t) {
+                threads.emplace_back([&, t]() {
+                    for (size_t x = t; x < N; x += num_threads) {
+                        for (size_t y = 0; y < M; ++y) {
+                            if (tmp.field[x][y] == '#')
+                                continue;
+                            for (auto [dx, dy] : deltas) {
+                                int nx = x + dx, ny = y + dy;
+                                if (tmp.field[nx][ny] != '#' && tmp.old_p[nx][ny] < tmp.old_p[x][y]) {
+                                    auto delta_p = tmp.old_p[x][y] - tmp.old_p[nx][ny];
+                                    auto force = delta_p;
+                                    auto &contr = tmp.velocity.get(nx, ny, -dx, -dy);
+                                    if (contr * tmp.rho[(int)tmp.field[nx][ny]] >= force) {
+                                        contr -= force / tmp.rho[(int)tmp.field[nx][ny]];
+                                        continue;
+                                    }
+                                    force -= contr * tmp.rho[(int)tmp.field[nx][ny]];
+                                    contr = 0;
+                                    tmp.velocity.add(x, y, dx, dy, force / tmp.rho[(int)tmp.field[x][y]]);
+                                    tmp.p[x][y] -= force / tmp.dirs[x][y];
+                                    total_delta_p -= force / tmp.dirs[x][y];
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            for (auto &th : threads) {
+                th.join();
+            }
+            threads.clear();
 
             // Make flow from velocities
             tmp.velocity_flow = {};
-            bool prop = false;
+            atomic<bool> prop = false;
             do {
                 tmp.UT += 2;
                 prop = 0;
-                for (size_t x = 0; x < N; ++x) {
-                    for (size_t y = 0; y < M; ++y) {
-                        if (tmp.field[x][y] != '#' && tmp.last_use[x][y] != tmp.UT) {
-                            auto [t, local_prop, _] = tmp.propagate_flow(x, y, 1);
-                            if (t > 0) {
-                                prop = 1;
+                for (size_t t = 0; t < num_threads; ++t) {
+                    threads.emplace_back([&, t](){
+                    for (size_t x = t; x < N; x+=num_threads) {
+                        for (size_t y = 0; y < M; ++y) {
+                            if (tmp.field[x][y] != '#' && tmp.last_use[x][y] != tmp.UT) {
+                                auto [t, local_prop, _] = tmp.propagate_flow(x, y, 1);
+                                if (t > 0) {
+                                    prop = true;
+                                }
                             }
                         }
                     }
+                    });
+                    for (auto &th : threads) {
+                        th.join();
+                    }
+                    threads.clear();
                 }
             } while (prop);
 
+
+
             // Recalculate p with kinetic energy
-            for (size_t x = 0; x < N; ++x) {
-                for (size_t y = 0; y < M; ++y) {
-                    if (tmp.field[x][y] == '#')
-                        continue;
-                    for (auto [dx, dy] : deltas) {
-                        auto old_v = tmp.velocity.get(x, y, dx, dy);
-                        auto new_v = tmp.velocity_flow.get(x, y, dx, dy);
-                        if (old_v > 0) {
-                            assert(new_v <= old_v);
-                            tmp.velocity.get(x, y, dx, dy) = new_v;
-                            auto force = (old_v - new_v) * tmp.rho[(int) tmp.field[x][y]];
-                            if (tmp.field[x][y] == '.')
-                                force *= 0.8;
-                            if (tmp.field[x + dx][y + dy] == '#') {
-                                tmp.p[x][y] += force / tmp.dirs[x][y];
-                                total_delta_p += force / tmp.dirs[x][y];
-                            } else {
-                                tmp.p[x + dx][y + dy] += force / tmp.dirs[x + dx][y + dy];
-                                total_delta_p += force / tmp.dirs[x + dx][y + dy];
+            for (size_t t = 0; t < num_threads; ++t) {
+                threads.emplace_back([&, t](){
+                for (size_t x = t; x < N; x+=num_threads) {
+                    for (size_t y = 0; y < M; ++y) {
+                        if (tmp.field[x][y] == '#')
+                            continue;
+                        for (auto [dx, dy] : deltas) {
+                            auto old_v = tmp.velocity.get(x, y, dx, dy);
+                            auto new_v = tmp.velocity_flow.get(x, y, dx, dy);
+                            if (old_v > 0) {
+                                assert(new_v <= old_v);
+                                tmp.velocity.get(x, y, dx, dy) = new_v;
+                                auto force = (old_v - new_v) * tmp.rho[(int) tmp.field[x][y]];
+                                if (tmp.field[x][y] == '.')
+                                    force *= 0.8;
+                                if (tmp.field[x + dx][y + dy] == '#') {
+                                    tmp.p[x][y] += force / tmp.dirs[x][y];
+                                    total_delta_p += force / tmp.dirs[x][y];
+                                } else {
+                                    tmp.p[x + dx][y + dy] += force / tmp.dirs[x + dx][y + dy];
+                                    total_delta_p += force / tmp.dirs[x + dx][y + dy];
+                                }
                             }
                         }
                     }
                 }
+                });
             }
+
+            for (auto &th : threads) {
+                th.join();
+            }
+            threads.clear();
 
             tmp.UT += 2;
             prop = false;

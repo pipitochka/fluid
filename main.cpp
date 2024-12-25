@@ -7,7 +7,9 @@
 #include <iostream>
 #include <cstring>
 #include <memory>
-
+#ifndef number
+#define number 8
+#endif
 
 struct Triplet_int {
     int a, b, c;
@@ -116,5 +118,5 @@ int main(int argc, char* argv[]) {
 
     }
     std::unique_ptr<FluidBase> t = ff.create(s1);
-    t->fluid();
+    t->fluid(number);
 }
