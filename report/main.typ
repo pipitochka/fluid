@@ -19,3 +19,14 @@
 == 1
 #set align(left)
 #include("data/1/1.typ")
+
+
+#set align(center)
+== 2
+#set align(left)
+#include("data/2/1.typ")
+
+#set align(center)
+== 3
+#set align(left)
+#include("data/3/1.typ")

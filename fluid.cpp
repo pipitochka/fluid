@@ -32,13 +32,13 @@ constexpr size_t N = 36, M = 84;
 // constexpr size_t N = 14, M = 5;
 class FluidBase {
 	public:
-	virtual void fluid() = 0;
+	virtual void fluid(int t) = 0;
 };
 
 template<int N, int M, typename T1, typename T2, typename T3>
 class Fluid: public FluidBase {
 public:
-    void fluid() override{
+    void fluid(int x) override{
         Data<N, M, T1, T2, T3> tmp;
         auto start = std::chrono::high_resolution_clock::now();
 
